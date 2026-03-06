@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profilo — Your Digital Resume</title>
+    <title>umesh nethmina</title>
     <meta name="description"
         content="Profilo - A stunning digital portfolio to showcase your education, skills, and experience for interviews.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -323,8 +323,8 @@
         </div>
     </footer>
 
-    <!-- Edit Mode FAB -->
-    <button class="fab-edit" id="fabEdit" title="Edit Profile">
+    <!-- Edit Mode FAB (hidden until admin login) -->
+    <button class="fab-edit" id="fabEdit" title="Edit Profile" style="display:none;">
         <i class="fas fa-pen"></i>
     </button>
 
@@ -480,6 +480,35 @@
                 <button class="btn btn-outline" id="modalCancel">Cancel</button>
                 <button class="btn btn-primary" id="modalSave">
                     <i class="fas fa-save"></i> Save Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div class="modal-overlay" id="adminLoginModal">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> Admin Login</h2>
+                <button class="modal-close" id="adminLoginClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:20px;">
+                    Enter your admin password to unlock edit mode.
+                </p>
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password">
+                </div>
+                <p class="admin-error" id="adminError"
+                    style="color:var(--danger);font-size:0.85rem;display:none;margin-bottom:12px;">
+                    <i class="fas fa-exclamation-circle"></i> Incorrect password. Try again.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="adminLoginCancel">Cancel</button>
+                <button class="btn btn-primary" id="adminLoginSubmit">
+                    <i class="fas fa-unlock"></i> Unlock
                 </button>
             </div>
         </div>

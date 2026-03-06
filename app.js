@@ -828,6 +828,117 @@ function initScrollReveal() {
     });
 }
 
+// ============ ADMIN AUTHENTICATION ============
+// IMPORTANT: Change this hash to your own password's SHA-256 hash before deploying!
+// Current default password is: umesh123
+// To generate a new hash, open browser console and run:
+//   crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR_PASSWORD')).then(h => console.log(Array.from(new Uint8Array(h)).map(b=>b.toString(16).padStart(2,'0')).join('')))
+const ADMIN_PASSWORD_HASH = "a]HASH_PLACEHOLDER[";
+let isAdminAuthenticated = false;
+
+// We'll compute the real hash at startup
+let ADMIN_HASH = "";
+
+async function computeHash(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Pre-compute the expected hash for "umesh123"
+// We store the plain password here since it's client-side anyway,
+// but it's better than showing the edit button to everyone.
+const ADMIN_PASSWORD = "umesh123";
+
+function initAdminAuth() {
+    const logo = document.querySelector(".nav-logo");
+    const loginModal = document.getElementById("adminLoginModal");
+    const loginClose = document.getElementById("adminLoginClose");
+    const loginCancel = document.getElementById("adminLoginCancel");
+    const loginSubmit = document.getElementById("adminLoginSubmit");
+    const passwordInput = document.getElementById("adminPassword");
+    const errorMsg = document.getElementById("adminError");
+    const fab = document.getElementById("fabEdit");
+
+    // Check if already authenticated this session
+    if (sessionStorage.getItem("profilo_admin") === "true") {
+        isAdminAuthenticated = true;
+        fab.style.display = "flex";
+    }
+
+    // Triple-click logo to open admin login
+    let clickCount = 0;
+    let clickTimer = null;
+
+    logo.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (isAdminAuthenticated) {
+            // Already logged in, scroll to top
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+
+        clickCount++;
+        if (clickCount === 1) {
+            clickTimer = setTimeout(() => { clickCount = 0; }, 800);
+        }
+        if (clickCount === 3) {
+            clearTimeout(clickTimer);
+            clickCount = 0;
+            openAdminLogin();
+        }
+    });
+
+    // Login modal controls
+    loginClose.addEventListener("click", closeAdminLogin);
+    loginCancel.addEventListener("click", closeAdminLogin);
+    loginModal.addEventListener("click", (e) => {
+        if (e.target === loginModal) closeAdminLogin();
+    });
+
+    loginSubmit.addEventListener("click", attemptLogin);
+    passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") attemptLogin();
+        errorMsg.style.display = "none";
+    });
+
+    function openAdminLogin() {
+        loginModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+        passwordInput.value = "";
+        errorMsg.style.display = "none";
+        setTimeout(() => passwordInput.focus(), 300);
+    }
+
+    function closeAdminLogin() {
+        loginModal.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    function attemptLogin() {
+        const enteredPassword = passwordInput.value;
+        if (enteredPassword === ADMIN_PASSWORD) {
+            isAdminAuthenticated = true;
+            sessionStorage.setItem("profilo_admin", "true");
+            fab.style.display = "flex";
+            closeAdminLogin();
+            showToast("🔓 Edit mode unlocked! Click the ✏️ button to edit.");
+        } else {
+            errorMsg.style.display = "block";
+            passwordInput.value = "";
+            passwordInput.focus();
+            // Shake animation
+            loginModal.querySelector(".modal").style.animation = "shake 0.4s ease";
+            setTimeout(() => {
+                loginModal.querySelector(".modal").style.animation = "";
+            }, 400);
+        }
+    }
+}
+
 // ============ INITIALIZE ============
 document.addEventListener("DOMContentLoaded", () => {
     loadProfile();
@@ -835,6 +946,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavbar();
     initModal();
     initContactForm();
+    initAdminAuth();
 
     // Delay scroll reveal to let initial renders complete
     setTimeout(initScrollReveal, 500);
