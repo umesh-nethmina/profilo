@@ -868,27 +868,30 @@ function initAdminAuth() {
         fab.style.display = "flex";
     }
 
-    // Triple-click logo to open admin login
-    let clickCount = 0;
-    let clickTimer = null;
+    // Double-click logo to open admin login
+    logo.addEventListener("dblclick", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isAdminAuthenticated) {
+            openAdminLogin();
+        }
+    });
 
+    // Single click on logo scrolls to top (normal behavior)
     logo.addEventListener("click", (e) => {
         e.preventDefault();
-
         if (isAdminAuthenticated) {
-            // Already logged in, scroll to top
             window.scrollTo({ top: 0, behavior: "smooth" });
-            return;
         }
+    });
 
-        clickCount++;
-        if (clickCount === 1) {
-            clickTimer = setTimeout(() => { clickCount = 0; }, 800);
-        }
-        if (clickCount === 3) {
-            clearTimeout(clickTimer);
-            clickCount = 0;
-            openAdminLogin();
+    // Keyboard shortcut: Ctrl + Shift + L
+    document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.shiftKey && e.key === "L") {
+            e.preventDefault();
+            if (!isAdminAuthenticated) {
+                openAdminLogin();
+            }
         }
     });
 
