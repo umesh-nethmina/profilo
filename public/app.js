@@ -89,7 +89,21 @@ const DEFAULT_DATA = {
 // ============ STATE MANAGEMENT ============
 let profileData = {};
 
-function loadProfile() {
+async function loadProfile() {
+    try {
+        const res = await fetch('/api/profile');
+        if (res.ok) {
+            const data = await res.json();
+            if (data) {
+                profileData = data;
+                return;
+            }
+        }
+    } catch (e) {
+        console.warn("Backend not available, trying local storage", e);
+    }
+
+    // Fallback if backend fetch fails
     const saved = localStorage.getItem("profilo_data");
     if (saved) {
         try {
@@ -102,8 +116,29 @@ function loadProfile() {
     }
 }
 
-function saveProfile() {
-    localStorage.setItem("profilo_data", JSON.stringify(profileData));
+async function saveProfile() {
+    const pwd = sessionStorage.getItem("profilo_pwd") || "umesh123";
+    try {
+        const res = await fetch('/api/profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${pwd}`
+            },
+            body: JSON.stringify(profileData)
+        });
+
+        if (!res.ok) throw new Error("Backend save failed");
+
+        // Save to local storage as backup
+        localStorage.setItem("profilo_data", JSON.stringify(profileData));
+        showToast("Profile saved successfully to backend!");
+    } catch (e) {
+        console.error("Save error", e);
+        // Fallback to local storage if backend is disconnected
+        localStorage.setItem("profilo_data", JSON.stringify(profileData));
+        showToast("Offline mode: Profile saved locally only.");
+    }
 }
 
 // ============ RENDER FUNCTIONS ============
@@ -713,7 +748,7 @@ function addProjectItem(data = {}, index) {
 }
 
 // ============ SAVE FROM MODAL ============
-function saveFromModal() {
+async function saveFromModal() {
     const d = profileData.personal;
 
     d.name = document.getElementById("editName").value.trim();
@@ -785,10 +820,9 @@ function saveFromModal() {
         });
     });
 
-    saveProfile();
+    await saveProfile();
     renderAll();
     closeModal();
-    showToast("Profile saved successfully!");
 }
 
 // ============ TOAST ============
@@ -926,6 +960,7 @@ function initAdminAuth() {
         if (enteredPassword === ADMIN_PASSWORD) {
             isAdminAuthenticated = true;
             sessionStorage.setItem("profilo_admin", "true");
+            sessionStorage.setItem("profilo_pwd", enteredPassword);
             fab.style.display = "flex";
             closeAdminLogin();
             showToast("🔓 Edit mode unlocked! Click the ✏️ button to edit.");
@@ -943,8 +978,8 @@ function initAdminAuth() {
 }
 
 // ============ INITIALIZE ============
-document.addEventListener("DOMContentLoaded", () => {
-    loadProfile();
+document.addEventListener("DOMContentLoaded", async () => {
+    await loadProfile();
     renderAll();
     initNavbar();
     initModal();

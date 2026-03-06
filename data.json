@@ -1,0 +1,142 @@
+{
+  "personal": {
+    "name": "Umesh Nethmina (Backend Test)",
+    "titles": [
+      "Software Developer",
+      "Problem Solver",
+      "Tech Enthusiast"
+    ],
+    "about": "I'm a passionate and dedicated individual with a strong foundation in technology and a drive to create impactful solutions. My journey in the world of technology has been fueled by curiosity and a constant desire to learn and grow.",
+    "heroDescription": "Passionate software developer crafting digital experiences. Ready to bring innovation and dedication to your team.",
+    "dob": "—",
+    "location": "India",
+    "email": "your.email@example.com",
+    "phone": "+91 XXXXX XXXXX",
+    "languages": "English, Hindi",
+    "statProjects": 5,
+    "statExperience": 1,
+    "statCertificates": 3,
+    "linkedIn": "",
+    "gitHub": "",
+    "profilePicture": ""
+  },
+  "education": [
+    {
+      "degree": "Bachelor of Technology (B.Tech)",
+      "institution": "Your University Name",
+      "date": "2020 – 2024",
+      "description": "Completed a four-year undergraduate program focused on Computer Science and Engineering with strong academic performance.",
+      "grade": "CGPA: 8.5 / 10"
+    },
+    {
+      "degree": "Higher Secondary (12th Standard)",
+      "institution": "Your School Name",
+      "date": "2018 – 2020",
+      "description": "Completed higher secondary education with a specialization in Science (PCM) and Computer Science.",
+      "grade": "Percentage: 85%"
+    },
+    {
+      "degree": "Secondary School (10th Standard)",
+      "institution": "Your School Name",
+      "date": "2018",
+      "description": "Completed secondary education with excellent grades across all subjects.",
+      "grade": "Percentage: 90%"
+    }
+  ],
+  "skills": [
+    {
+      "name": "JavaScript",
+      "icon": "fab fa-js-square",
+      "level": 85
+    },
+    {
+      "name": "React",
+      "icon": "fab fa-react",
+      "level": 80
+    },
+    {
+      "name": "HTML5",
+      "icon": "fab fa-html5",
+      "level": 90
+    },
+    {
+      "name": "CSS3",
+      "icon": "fab fa-css3-alt",
+      "level": 85
+    },
+    {
+      "name": "Node.js",
+      "icon": "fab fa-node-js",
+      "level": 75
+    },
+    {
+      "name": "Python",
+      "icon": "fab fa-python",
+      "level": 70
+    },
+    {
+      "name": "Java",
+      "icon": "fab fa-java",
+      "level": 75
+    },
+    {
+      "name": "Git",
+      "icon": "fab fa-git-alt",
+      "level": 80
+    },
+    {
+      "name": "MongoDB",
+      "icon": "fas fa-database",
+      "level": 70
+    },
+    {
+      "name": "SQL",
+      "icon": "fas fa-table",
+      "level": 75
+    },
+    {
+      "name": "Docker",
+      "icon": "fab fa-docker",
+      "level": 60
+    },
+    {
+      "name": "AWS",
+      "icon": "fab fa-aws",
+      "level": 55
+    }
+  ],
+  "experience": [
+    {
+      "title": "Software Developer Intern",
+      "company": "Your Company Name",
+      "date": "2024 – Present",
+      "description": "Working on building scalable web applications using modern frameworks and best practices. Collaborating with cross-functional teams to deliver high-quality software solutions."
+    }
+  ],
+  "projects": [
+    {
+      "title": "Portfolio Website",
+      "description": "A stunning personal portfolio website built with HTML, CSS, and JavaScript to showcase skills, education, and projects.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "icon": "fas fa-globe",
+      "liveUrl": "#",
+      "repoUrl": "#"
+    },
+    {
+      "title": "Task Management App",
+      "description": "A full-stack task management application with user authentication, CRUD operations, and real-time updates.",
+      "tags": [
+        "React",
+        "Node.js",
+        "MongoDB"
+      ],
+      "icon": "fas fa-tasks",
+      "liveUrl": "#",
+      "repoUrl": "#"
+    }
+  ]
+}
